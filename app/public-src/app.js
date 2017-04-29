@@ -7,7 +7,9 @@ export default class App extends Component {
 		return (
 			<div>
 				<Map zoom={10} center={{ lat: 39.5252966, lng: -119.8166583 }} />
-				<Player />
+				<Player handleChange={ (year) => {
+					console.log(year);
+				}}/>
 			</div>
 		);
 	}

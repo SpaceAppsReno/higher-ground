@@ -6,20 +6,11 @@ import Icon from 'app-components/icon/icon';
 
 export default class Player extends Component {
 	static propTypes = {
-		// variant: React.PropTypes.oneOfType([
-		// 	React.PropTypes.oneOf(CLASSES),
-		// 	React.PropTypes.arrayOf(
-		// 		React.PropTypes.oneOf(CLASSES),
-		// 	),
-		// ]),
-		// visible: React.PropTypes.bool.isRequired,
-		// to: React.PropTypes.oneOfType([
-		// 	React.PropTypes.string,
-		// 	React.PropTypes.object,
-		// ]),
-		// href: React.PropTypes.string,
-		// className: React.PropTypes.string,
-		// children: React.PropTypes.node,
+		value: React.PropTypes.number,
+		min: React.PropTypes.number,
+		max: React.PropTypes.number,
+		handleChange: React.PropTypes.func.isRequired,
+		step: React.PropTypes.number,
 	};
 
 	static defaultProps = {
@@ -29,7 +20,21 @@ export default class Player extends Component {
 	render() {
 		return (
 			<div className={styles.main}>
-				<Icon name='play'/>
+				<div>
+					<input
+						className={styles.slider}
+						type="range"
+						value={this.props.value}
+						min={this.props.min}
+						max={this.props.max}
+						onInput={this.props.handleChange}
+						step={this.props.step} />
+				</div>
+				<div className={styles.controls}>
+					<Icon className={styles.control} name='backward'/>
+					<Icon className={styles.control} name='play'/>
+					<Icon className={styles.control} name='forward'/>
+				</div>
 			</div>
 		);
 	}
