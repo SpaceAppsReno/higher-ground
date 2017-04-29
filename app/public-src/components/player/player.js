@@ -1,10 +1,10 @@
 import classes from 'app-utils/classes';
-import styles from './button.scss';
+import styles from './player.scss';
 
 import React, { Component } from 'react';
-import Icon from 'app-components/icon';
+import Icon from 'app-components/icon/icon';
 
-export default class Button extends Component {
+export default class Player extends Component {
 	static propTypes = {
 		// variant: React.PropTypes.oneOfType([
 		// 	React.PropTypes.oneOf(CLASSES),
@@ -28,8 +28,8 @@ export default class Button extends Component {
 
 	render() {
 		return (
-			<div>
-				<Icon className='play'/>
+			<div className={styles.main}>
+				<Icon name='play'/>
 			</div>
 		);
 	}
