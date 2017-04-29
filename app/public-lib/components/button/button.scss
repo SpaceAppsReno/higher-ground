@@ -1,0 +1,7 @@
+.main {
+	display: inline-block;
+}
+
+.main + .main {
+	margin-left: 1em;
+}

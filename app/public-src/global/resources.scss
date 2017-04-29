@@ -1,0 +1,19 @@
+@mixin background($size: contain, $position: 50% 50%, $repeat: no-repeat, $attachment: scroll, $color: transparent) {
+	background: $repeat $attachment $position $color;
+	background-size: $size;
+}
+
+@mixin clamp($count: 1) {
+	overflow: hidden;
+	text-overflow: ellipsis;
+
+	@if ($count == 1) {
+		white-space: nowrap;
+	}
+	@else {
+		max-height: 1.5em * $count;
+		display: -webkit-box;
+		-webkit-line-clamp: $count;
+		-webkit-box-orient: vertical;
+	}
+}
