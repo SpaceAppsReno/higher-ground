@@ -2,7 +2,6 @@ import classes from 'app-utils/classes';
 import styles from './button.scss';
 
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 
 const CLASSES = [
 	'primary', 'secondary', 'success', 'alert', 'warning', 'disabled',
@@ -47,9 +46,6 @@ export default class Button extends Component {
 		}
 
 		let Tag = 'button';
-		if (props.to) {
-			Tag = Link;
-		}
 		if (props.href) {
 			Tag = 'a';
 		}
