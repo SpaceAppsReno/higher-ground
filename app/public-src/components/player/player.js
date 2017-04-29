@@ -20,6 +20,9 @@ export default class Player extends Component {
 	render() {
 		return (
 			<div className={styles.main}>
+				<div className={styles.year}>
+					2100
+				</div>
 				<div>
 					<input
 						className={styles.slider}
