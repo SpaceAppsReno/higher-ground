@@ -1,16 +1,24 @@
-export default class RegWS {
+import { setRegistered, setError } from '../actions/registrationActions';
+import store from '../store/configStore';
+
+class RegWS {
 	constructor() {
 		this.ws = new WebSocket('ws://localhost:3001');
 
 		this.ws.onopen = (arg) => {
 			// connection opened
 			console.log("arg", arg)
-			ws.send('something'); // send a message
+			// this.ws.send('something'); // send a message
 		};
 
 		this.ws.onmessage = (e) => {
 			// a message was received
-			console.log(e.data);
+			const event = JSON.parse(e.data);
+			switch (event.event) {
+				case 'hello':
+					store.dispatch(setRegistered({ registered: true }));
+					break;
+			}
 		};
 
 		this.ws.onerror = (e) => {
@@ -20,17 +28,21 @@ export default class RegWS {
 
 		this.ws.onclose = (e) => {
 			// connection closed
-			console.log(e.code, e.reason);
+			console.log("onclose", e.code, e.reason);
 		};
 	}
 
-	register(code) {
-		this.ws.send({
+	register(app) {
+		console.log("register")
+		this.ws.send(JSON.stringify({
 			event: 'hello',
 			data: {
-				code,
+				type: 'controller',
+				app,
 			},
-		});
+		}));
 	}
 
 }
+
+export default new RegWS();

@@ -31,6 +31,7 @@ const componentStyles = StyleSheet.create({
 		borderColor: 'gray',
 		borderWidth: 1,
 		marginRight: 7,
+		textAlign: 'center',
 	},
 });
 
@@ -38,6 +39,7 @@ const componentStyles = StyleSheet.create({
 export class LoginScreen extends Component {
 	static navigationOptions = {
 		title: 'Welcome',
+		headerBackTitle: null,
 	};
 	constructor(props) {
 		super(props);
@@ -51,6 +53,11 @@ export class LoginScreen extends Component {
 		this.state = {
 			code,
 		};
+	}
+
+	componentWillReceiveProps(nextProps) {
+		const { navigate } = this.props.navigation;
+		navigate('MapScreen');
 	}
 
 	onChangeText(index, value) {
@@ -103,7 +110,6 @@ export class LoginScreen extends Component {
 	}
 
 	render() {
-		const { navigate } = this.props.navigation;
 		return (
 			<View style={componentStyles.screen}>
 				<Text>Please enter the code on the screen.</Text>
@@ -128,6 +134,7 @@ export class LoginScreen extends Component {
 LoginScreen.propTypes = {
 	actions: PropTypes.object,
 	code: PropTypes.string,
+	navigation: PropTypes.object,
 	registered: PropTypes.bool,
 };
 

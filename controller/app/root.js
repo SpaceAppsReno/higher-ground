@@ -6,9 +6,11 @@ import {
 	StackNavigator,
 } from 'react-navigation';
 import LoginScreen from './containers/login';
+import MapScreen from './containers/map';
 
 const App = StackNavigator({
-	Login: {screen: LoginScreen},
+	Login: { screen: LoginScreen },
+	MapScreen: { screen: MapScreen },
 });
 
 export default class Root extends Component {

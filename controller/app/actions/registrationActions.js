@@ -15,3 +15,10 @@ export function register({ code }) {
 		console.log("getState", getState(), code)
 	};
 }
+
+export function setRegistered({ registered }) {
+	return {
+		type: REGISTRATION.SET_REGISTERED,
+		payload: registered,
+	};
+}
