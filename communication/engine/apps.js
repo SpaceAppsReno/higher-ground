@@ -2,7 +2,7 @@ let apps = {};
 
 export default {
 	register(app) {
-		let key = Math.random().toString(36).slice(2, 6);
+		let key = Math.random().toString(10).slice(2, 6);
 		apps[key] = app;
 
 		return key;

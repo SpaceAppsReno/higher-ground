@@ -1,4 +1,4 @@
-const socket = new WebSocket('ws://localhost:3000');
+const socket = new WebSocket('ws://localhost:3001');
 
 socket.addEventListener('open', (event) => {
 	socket.send(JSON.stringify({
