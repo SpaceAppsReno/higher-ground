@@ -1,0 +1,57 @@
+.main {
+  display: block;
+  margin: 0 auto;
+  margin-bottom: 5rem;
+}
+
+.content{
+    background-color: #fff;
+    height: 500px;
+    width: 500px;
+    border-radius: 100%;
+    text-align: center;
+    padding-top: 100px;
+}
+.counter{
+    font-weight: 700;
+    font-size: 250px;
+    line-height: 180px;
+    color: #e84b3a;
+}
+.content > p{
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 1;
+    color: #d50dad;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+}
+.clock-item{
+    display: inline-block;
+    margin-right: 20px;
+}
+.clock-item:last-child{
+    margin: 0px;
+}
+.clock-item span{
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 1;
+    color: #e84b3a;
+}
+.clock-item p{
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 1.5;
+    margin: 0px;
+    color: #e84b3a;
+}
+.clock-item:nth-child(2) span, .clock-item:nth-child(2) p{
+    color: #fc7f0c;
+}
+.clock-item:nth-child(3) span, .clock-item:nth-child(3) p{
+    color: #f5b429;
+}
+.clock-item:nth-child(4) span, .clock-item:nth-child(4) p{
+    color: #d50dad;
+}

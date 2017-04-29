@@ -1,0 +1,57 @@
+.main {
+	table {
+		border: 10px solid #fafafa;
+		border-top: none;
+		overflow-X: auto;
+	}
+
+	table th {
+		border: none;
+		font-size: 16px;
+		line-height: 1;
+		font-weight: 700;
+		text-transform: uppercase;
+		color: #fff;
+		background-color: #65ac4c;
+		padding: 27px 30px;
+	}
+
+	table tbody tr:hover {
+		box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, .12);
+	}
+
+	table td {
+		border: none;
+		border-bottom: 1px solid #f0f0f0;
+		font-size: 16px;
+		line-height: 1;
+		color: #696969;
+		padding: 27px 30px;
+		-webkit-transition: .25s;
+		transition: .25s;
+	}
+
+	table td:hover {
+		color: #ff9822;
+	}
+
+	table td:first-child {
+		border-left: 1px solid #f0f0f0;
+		font-weight: bold;
+	}
+
+	table td:last-child {
+		border-right: 1px solid #f0f0f0;
+	}
+
+	table td span {
+		margin-right: 8px;
+	}
+}
+
+caption {
+	text-align: center;
+	text-transform: uppercase;
+	color: black;
+	font-size: 3rem;
+}
