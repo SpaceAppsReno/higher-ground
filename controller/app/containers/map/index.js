@@ -21,6 +21,7 @@ import {
 import {
 	sendDataset,
 	sendPlaying,
+	sendRegion,
 	sendStop,
 } from '../../actions/mapControllerActions';
 import RewindButton from '../../components/RewindButton';
@@ -33,6 +34,7 @@ import ThermometerButton from '../../components/ThermometerButton';
 import VegetationButton from '../../components/VegetationButton';
 import WaterButton from '../../components/WaterButton';
 import WSService from '../../services/WSService';
+import MapView from 'react-native-maps';
 
 const componentStyles = StyleSheet.create({
 	screen: {
@@ -50,6 +52,9 @@ const componentStyles = StyleSheet.create({
 		marginRight: 7,
 		textAlign: 'center',
 	},
+	map: {
+    ...StyleSheet.absoluteFillObject,
+  },
 });
 
 @autobind
@@ -71,6 +76,11 @@ export class MapScreen extends Component {
 		if (!nextProps.registered) {
 			this.props.navigation.goBack(null);
 		}
+	}
+
+	changeRegion(data) {
+		console.log("changeRegion", data)
+		this.props.actions.sendRegion(data)
 	}
 
 	onChangeSearch() {
@@ -171,6 +181,7 @@ export class MapScreen extends Component {
 	}
 
 	renderMapTouchArea() {
+		console.log("MapView", MapView)
 		return (
 			<View style={{
 				backgroundColor: 'gray',
@@ -182,7 +193,13 @@ export class MapScreen extends Component {
 			}}>
 				<View style={{
 					flexGrow: 1,
-				}} />
+				}}>
+					<MapView
+						region={this.props.region}
+						onRegionChange={this.changeRegion}
+						style={componentStyles.map}
+					/>
+				</View>
 			</View>
 		);
 	}
@@ -271,6 +288,7 @@ const mapStateToProps = (state) => {
 		dataset: state.mapControllerReducer.dataset,
 		ffEnabled: state.mapControllerReducer.year !== state.mapControllerReducer.yearEnd,
 		playing: state.mapControllerReducer.playing,
+		region: state.mapControllerReducer.region,
 		registered: state.registrationReducer.registered,
 		rewindEnabled: state.mapControllerReducer.year !== state.mapControllerReducer.yearStart,
 		stopEnabled: state.mapControllerReducer.year !== state.mapControllerReducer.yearStart,
@@ -283,6 +301,7 @@ const mapDispatchToProps = (dispatch) => {
 			register,
 			sendDataset,
 			sendPlaying,
+			sendRegion,
 			sendStop,
 			updateCode,
 		}, dispatch),

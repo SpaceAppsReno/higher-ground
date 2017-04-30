@@ -3,7 +3,7 @@ import {
 } from '../actions/actionTypes';
 
 const initialState = {
-	code: '1234',
+	code: '0000',
 	registered: false,
 };
 

@@ -5,6 +5,12 @@ import {
 const initialState = {
 	dataset: '',
 	playing: false,
+	region: {
+		latitude: 37.78825,
+		longitude: -122.4324,
+		latitudeDelta: 0.0922,
+		longitudeDelta: 0.0421,
+	},
 	stopEnabled: false,
 	year: 200,
 	yearEnd: 2000,
@@ -23,6 +29,14 @@ export default function mapControllerReducer(state = initialState, action = {}) 
 			return {
 				...state,
 				playing: action.payload,
+			};
+
+		case MAP_CONTROLLER.SET_REGION:
+			return {
+				...state,
+				region: {
+					...action.payload,
+				},
 			};
 
 		case MAP_CONTROLLER.SET_YEAR:
