@@ -1,6 +1,13 @@
 import { MAP_CONTROLLER } from './actionTypes';
 import WSService from '../services/WSService';
 
+export function setDataset(payload) {
+	return {
+		type: MAP_CONTROLLER.DATASET,
+		payload,
+	};
+}
+
 export function setPlaying(payload) {
 	return {
 		type: MAP_CONTROLLER.IS_PLAYING,
@@ -19,6 +26,13 @@ export function setYear(payload) {
 	return {
 		type: MAP_CONTROLLER.SET_YEAR,
 		payload,
+	};
+}
+
+export function sendDataset({ dataset }) {
+	return (dispatch) => {
+		dispatch(setDataset(dataset));
+		WSService.send('dataset', { dataset });
 	};
 }
 

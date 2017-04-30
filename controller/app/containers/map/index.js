@@ -12,12 +12,14 @@ import ReactNative, {
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import autobind from 'autobind-decorator';
-import Icon from 'react-native-vector-icons/Ionicons';
+// import Icon from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import {
 	register,
 	updateCode,
 } from '../../actions/registrationActions';
 import {
+	sendDataset,
 	sendPlaying,
 	sendStop,
 } from '../../actions/mapControllerActions';
@@ -27,6 +29,10 @@ import StopButton from '../../components/StopButton';
 import FFButton from '../../components/FFButton';
 import ProgressBar from '../../components/ProgressBar';
 import LocateButton from '../../components/LocateButton';
+import ThermometerButton from '../../components/ThermometerButton';
+import VegetationButton from '../../components/VegetationButton';
+import WaterButton from '../../components/WaterButton';
+import WSService from '../../services/WSService';
 
 const componentStyles = StyleSheet.create({
 	screen: {
@@ -72,12 +78,7 @@ export class MapScreen extends Component {
 	}
 
 	locateUser() {
-		console.log("Navigator", navigator)
-		navigator.geolocation.getCurrentPosition((...args) => {
-			console.log("success", args)
-		}, (err) => {
-			console.log("err", err);
-		}, { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 });
+		WSService.send('geolocate');
 	}
 
 	renderControls() {
@@ -129,6 +130,39 @@ export class MapScreen extends Component {
 		);
 	}
 
+	renderDatasetControls() {
+		const { dataset } = this.props;
+		const thermometerSelected = dataset === 'temperature';
+		const vegetationSelected = dataset === 'vegetation';
+		const waterSelected = dataset === 'water';
+		return (
+			<View style={{
+					marginRight: 7,
+					justifyContent: 'center',
+					alignItems: 'center'
+			}}>
+				<ThermometerButton
+					onPress={() => this.props.actions.sendDataset({ dataset: 'temperature' })}
+					selected={thermometerSelected}
+					style={{
+						marginBottom: 14,
+					}}
+				/>
+				<VegetationButton
+					onPress={() => this.props.actions.sendDataset({ dataset: 'vegetation' })}
+					selected={vegetationSelected}
+					style={{
+						marginBottom: 14,
+					}}
+				/>
+				<WaterButton
+					onPress={() => this.props.actions.sendDataset({ dataset: 'water' })}
+					selected={waterSelected}
+				/>
+			</View>
+		)
+	}
+
 	renderError() {
 		const { error } = this.state;
 		if (error) {
@@ -145,7 +179,6 @@ export class MapScreen extends Component {
 				flexDirection: 'row',
 				flexGrow: 1,
 				marginHorizontal: 7,
-				marginTop: 7,
 			}}>
 				<View style={{
 					flexGrow: 1,
@@ -201,7 +234,14 @@ export class MapScreen extends Component {
 			<View style={componentStyles.screen}>
 				{this.renderSearch()}
 				{this.renderError()}
-				{this.renderMapTouchArea()}
+				<View style={{
+					flexDirection: 'row',
+					flex: 1,
+					marginTop: 7,
+				}}>
+					{this.renderMapTouchArea()}
+					{this.renderDatasetControls()}
+				</View>
 				{this.renderControls()}
 			</View>
 		);
@@ -211,6 +251,7 @@ export class MapScreen extends Component {
 MapScreen.propTypes = {
 	actions: PropTypes.object,
 	code: PropTypes.string,
+	dataset: PropTypes.string,
 	ffEnabled: PropTypes.bool,
 	playing: PropTypes.bool,
 	navigation: PropTypes.object,
@@ -227,6 +268,7 @@ MapScreen.defaultProps = {
 const mapStateToProps = (state) => {
 	return {
 		code: state.registrationReducer.code,
+		dataset: state.mapControllerReducer.dataset,
 		ffEnabled: state.mapControllerReducer.year !== state.mapControllerReducer.yearEnd,
 		playing: state.mapControllerReducer.playing,
 		registered: state.registrationReducer.registered,
@@ -239,6 +281,7 @@ const mapDispatchToProps = (dispatch) => {
 	return {
 		actions: bindActionCreators({
 			register,
+			sendDataset,
 			sendPlaying,
 			sendStop,
 			updateCode,

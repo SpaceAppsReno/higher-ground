@@ -6,7 +6,7 @@ import autobind from 'autobind-decorator';
 @autobind
 class WSService {
 	constructor() {
-		this.ws = new WebSocket('ws://localhost:3001');
+		this.ws = new WebSocket('wss://higher-ground-communication.herokuapp.com');
 
 		this.ws.onopen = (arg) => {
 			// connection opened
@@ -16,6 +16,7 @@ class WSService {
 
 		this.ws.onmessage = (e) => {
 			// a message was received
+			console.log("onmessage", e.data)
 			const event = JSON.parse(e.data);
 			switch (event.event) {
 				case 'hello':
@@ -26,6 +27,12 @@ class WSService {
 					break;
 				case 'playing':
 					store.dispatch(MapController.setPlaying(event.data));
+					break;
+				case 'year':
+					store.dispatch(MapController.setYear(event.data));
+					break;
+				case 'dataset':
+					store.dispatch(MapController.setDataset(event.data));
 					break;
 			}
 		};
@@ -55,7 +62,7 @@ class WSService {
 		store.dispatch(setRegistered({ registered: false }));
 	}
 
-	send(event, data) {
+	send(event, data = {}) {
 		this.ws.send(JSON.stringify({
 			event,
 			data: {

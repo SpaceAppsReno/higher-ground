@@ -3,6 +3,7 @@ import {
 } from '../actions/actionTypes';
 
 const initialState = {
+	dataset: '',
 	playing: false,
 	stopEnabled: false,
 	year: 200,
@@ -12,6 +13,12 @@ const initialState = {
 
 export default function mapControllerReducer(state = initialState, action = {}) {
 	switch (action.type) {
+		case MAP_CONTROLLER.DATASET:
+			return {
+				...state,
+				dataset: action.payload,
+			};
+
 		case MAP_CONTROLLER.IS_PLAYING:
 			return {
 				...state,
