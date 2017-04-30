@@ -70,7 +70,6 @@ export default class App extends Component {
 					presenting={ this.state.presenting }
 					onDataset={ (dataset) => this.setState({ dataset }) }
 					onGeolocate={ () => this._map && this._map.geolocate() }
-					onPresent={ () => this.initPresentation() }
 				/>
 
 				<Player
@@ -79,6 +78,7 @@ export default class App extends Component {
 					max={2100}
 					presenting={ this.state.presenting }
 					onYear={ (year) => this.setState({ year }) }
+					onPresent={ () => this.initPresentation() }
 				/>
 
 				{ this.state.key ? (

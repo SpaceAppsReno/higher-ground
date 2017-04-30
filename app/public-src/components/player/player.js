@@ -3,6 +3,7 @@ import styles from './player.scss';
 
 import React, { Component } from 'react';
 import Icon from 'app-components/icon/icon';
+import Button from 'app-components/button/button';
 
 export default class Player extends Component {
 	static propTypes = {
@@ -11,6 +12,7 @@ export default class Player extends Component {
 		max: React.PropTypes.number.isRequired,
 		presenting: React.PropTypes.bool.isRequired,
 		onYear: React.PropTypes.func.isRequired,
+		onPresent: React.PropTypes.func.isRequired,
 	};
 
 	constructor() {
@@ -61,6 +63,9 @@ export default class Player extends Component {
 					<Icon className={classes(styles.control, styles.btn)} name='forward' onClick={() => {
 						this.props.onYear(parseInt(this.props.year + 1));
 					}}/>
+					<Button className={styles.presentation} onClick={() => {
+						this.props.onPresent(true);
+					}}>Presentation Mode</Button>
 				</div>
 			</div>
 		);
