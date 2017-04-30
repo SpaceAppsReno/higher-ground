@@ -1,5 +1,6 @@
 import { MAP_CONTROLLER } from './actionTypes';
 import WSService from '../services/WSService';
+import { convertRegionToBounds } from '../helpers/mapHelpers';
 
 export function setDataset(payload) {
 	return {
@@ -11,6 +12,13 @@ export function setDataset(payload) {
 export function setPlaying(payload) {
 	return {
 		type: MAP_CONTROLLER.IS_PLAYING,
+		payload,
+	};
+}
+
+export function setRegion(payload) {
+	return {
+		type: MAP_CONTROLLER.SET_REGION,
 		payload,
 	};
 }
@@ -34,6 +42,15 @@ export function sendDataset({ dataset }) {
 		dispatch(setDataset(dataset));
 		WSService.send('dataset', { dataset });
 	};
+}
+
+export function sendRegion(region) {
+
+	return () => {
+		WSService.send('bounds', {
+			data: convertRegionToBounds(region),
+		});
+	}
 }
 
 export function sendPlaying({ playing }) {

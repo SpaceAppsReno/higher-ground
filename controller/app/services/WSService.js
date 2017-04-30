@@ -2,6 +2,7 @@ import { setRegistered, setError } from '../actions/registrationActions';
 import MapController from '../actions/mapControllerActions';
 import store from '../store/configStore';
 import autobind from 'autobind-decorator';
+import { convertBoundsToRegion } from '../helpers/mapHelpers';
 
 @autobind
 class WSService {
@@ -34,6 +35,11 @@ class WSService {
 				case 'dataset':
 					store.dispatch(MapController.setDataset(event.data));
 					break;
+				case 'bounds':
+					store.dispatch(MapController.setRegion({
+						...event.data.bounds,
+					}));
+					break;
 			}
 		};
 
@@ -63,6 +69,7 @@ class WSService {
 	}
 
 	send(event, data = {}) {
+		console.log("send", event, data)
 		this.ws.send(JSON.stringify({
 			event,
 			data: {
