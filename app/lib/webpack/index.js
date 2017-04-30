@@ -23,7 +23,11 @@ function addPolyfill(input) {
 }
 
 module.exports = function(dirname, options) {
-	options.title = options.title || 'Gamify Reno';
+	if (typeof options.dev === 'undefined') {
+		options.dev = process.argv.includes('--watch');
+	}
+
+	options.title = options.title || 'App';
 	options.resolve_alias = options.resolve_alias || {};
 
 	options.entry = options.entry || './public-src/bootstrap.js';
@@ -89,12 +93,14 @@ module.exports = function(dirname, options) {
 					include: pathAll,
 					exclude: pathGlobal,
 					use: ExtractTextPlugin.extract({
-						fallback: 'style-loader',
 						use: [
 							{
 								loader: 'css-loader',
 								options: {
 									modules: true,
+									localIdentName: options.dev
+										? '[path][name]__[local]'
+										: '[hash:base64:8]',
 									sourceMap: true,
 									sourceMapContents: true,
 								},
@@ -106,7 +112,6 @@ module.exports = function(dirname, options) {
 					test: /\.s?css$/,
 					include: pathGlobal,
 					use: ExtractTextPlugin.extract({
-						fallback: 'style-loader',
 						use: [
 							{
 								loader: 'css-loader',
@@ -140,14 +145,18 @@ module.exports = function(dirname, options) {
 				},
 			],
 		},
+
 		plugins: [
 			new ExtractTextPlugin('[name].[hash].min.css'),
-			new webpack.optimize.UglifyJsPlugin({
+			options.dev ? null : new webpack.optimize.UglifyJsPlugin({
 				sourceMap: true,
 				sourceMapContents: true,
 			}),
 			new webpack.DefinePlugin({
-				'process.env.NODE_ENV': JSON.stringify('production'),
+				'process.env.NODE_ENV': JSON.stringify(options.dev
+					? 'development'
+					: 'production'
+				),
 			}),
 			new HtmlWebpackPlugin({
 				title: options.title,
@@ -157,6 +166,6 @@ module.exports = function(dirname, options) {
 				},
 				template: path.join(__dirname, 'template.ejs'),
 			}),
-		],
+		].filter(v => v),
 	};
 };
