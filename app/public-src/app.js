@@ -1,3 +1,5 @@
+import styles from './app.scss';
+
 import React, { Component } from 'react';
 import Map from './components/map/map';
 import Player from './components/player/player';
@@ -25,7 +27,7 @@ export default class App extends Component {
 
 	render() {
 		return (
-			<div>
+			<div className={styles.mainWrapper}>
 				<Map
 					ref={ (ref) => this.registerMap(ref) }
 					dataset={ this.state.dataset }
