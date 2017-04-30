@@ -1,7 +1,4 @@
-const uri = window.location.hostname === 'localhost'
-	? 'ws://localhost:3001'
-	: 'wss://higher-ground-communication.herokuapp.com'
-;
+const uri = 'wss://higher-ground-communication.herokuapp.com';
 
 export default class Controller {
 	constructor() {

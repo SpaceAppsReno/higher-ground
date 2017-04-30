@@ -1,5 +1,5 @@
 import styles from './app.scss';
-import Controller from 'app-controller/controller';
+import APIController from 'app-api/controller/controller';
 
 import React, { Component } from 'react';
 import Map from './components/map/map';
@@ -17,10 +17,10 @@ export default class App extends Component {
 			dataset: 'temperature',
 			year: 2050,
 			bounds: {
-				east: -119.75490311964109,
-				north: 39.538635617749755,
-				south: 39.51195501951582,
-				west: -119.87841348035886,
+				east: -118.75,
+				north: 42.5730323791504,
+				south: 36.5056190490723,
+				west: -121.25,
 			},
 		};
 	}
@@ -34,16 +34,14 @@ export default class App extends Component {
 			return;
 		}
 
-		this._controller = new Controller();
-		this._controller.on('hello', ({ key }) => this.setState({ key }));
+		this._controller = new APIController();
+		this._controller.on('hello', ({ key }) => this.setState({ key, presenting: true }));
 		this._controller.on('controller', () => this.setState({ key: null }));
 
 		this._controller.on('dataset', (dataset) => this.setState({ dataset }));
 		this._controller.on('year', (year) => this.setState({ year }));
 		this._controller.on('bounds', (bounds) => this.setState({ bounds }));
 		this._controller.on('geolocate', () => this._map && this._map.geolocate());
-
-		this.setState({ presenting: true });
 	}
 
 	render() {

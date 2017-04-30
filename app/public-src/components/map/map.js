@@ -1,5 +1,6 @@
 import styles from './map.scss';
 import classes from 'app-utils/classes';
+import APIData from 'app-api/data/data';
 
 import React, { Component } from 'react';
 import Icon from 'app-components/icon/icon';
@@ -23,6 +24,47 @@ export default class Map extends Component {
 
 		onBounds: React.PropTypes.func.isRequired,
 	};
+
+	initialize(ref) {
+		this._map = new google.maps.Map(ref, {
+			disableDefaultUI: true,
+			styles: [
+				{
+					stylers: [
+						{ invert_lightness: true },
+						{ saturation: -100 },
+						{ lightness: 33 },
+						{ gamma: 0.5 },
+					],
+				},
+				{
+					featureType: 'water',
+					elementType: 'geometry',
+					stylers: [
+						{ color: '#2d333c' },
+					],
+				},
+			],
+		});
+
+		this._heatmap = new google.maps.visualization.HeatmapLayer({
+			map: this._map,
+		});
+
+		window.addEventListener('resize', () => {
+			this._map.setCenter(this._map.fitBounds(this.props.bounds));
+		});
+
+		this._map.addListener('idle', () => {
+			this.props.onBounds(this._map.getBounds().toJSON());
+		});
+
+		this._radius = 2.5;
+		this._map.addListener('zoom_changed', () => {
+			let zoom = this._map.getZoom();
+			this._heatmap.set('radius', this._radius * Math.pow(2, zoom));
+		});
+	}
 
 	registerMap(ref) {
 		if (!ref) {
@@ -67,45 +109,6 @@ export default class Map extends Component {
 		}
 	}
 
-	initialize(ref) {
-		this._map = new google.maps.Map(ref, {
-			disableDefaultUI: true,
-			styles: [
-				{
-					stylers: [
-						{ invert_lightness: true },
-						{ saturation: -100 },
-						{ lightness: 33 },
-						{ gamma: 0.5 },
-					],
-				},
-				{
-					featureType: 'water',
-					elementType: 'geometry',
-					stylers: [
-						{ color: '#2d333c' },
-					],
-				},
-			],
-		});
-
-		window.addEventListener('resize', () => {
-			this._map.setCenter(this._map.fitBounds(this.props.bounds));
-		});
-
-		this._map.addListener('idle', () => {
-			this.props.onBounds(this._map.getBounds().toJSON());
-		});
-	}
-
-	update() {
-		if (this.props.dataset !== 'temperature') {
-			return;
-		}
-
-		console.log('update')
-	}
-
 	geolocate() {
 		if (navigator.geolocation) {
 			navigator.geolocation.getCurrentPosition((position) => {
@@ -115,6 +118,34 @@ export default class Map extends Component {
 				});
 			});
 		}
+	}
+
+	async update() {
+		if (this.props.dataset !== 'temperature') {
+			return;
+		}
+
+		let { lons, lats, data } = await APIData.getPoints({
+			dataset: this.props.dataset,
+			year: this.props.year,
+			bounds: this.props.bounds,
+		});
+
+		let points = [];
+		for (let lat in data) {
+			for (let lon in data[lat]) {
+				points.push({
+					location: new google.maps.LatLng(lats[lat], lons[lon]),
+					weight: data[lat][lon],
+				});
+			}
+		}
+
+		let zoom = this._map.getZoom();
+		this._radius = getRadius(zoom, lats, lons);
+		this._heatmap.set('radius', this._radius * Math.pow(2, zoom));
+
+		this._heatmap.setData(points);
 	}
 
 	render() {
@@ -140,4 +171,28 @@ export default class Map extends Component {
 			</div>
 		);
 	}
+}
+
+function getRadius(zoom, lats, lons) {
+	let lat = Math.floor(lats.length / 2) - 1;
+	let lon = Math.floor(lons.length / 2) - 1;
+	let a = project(new google.maps.LatLng(lats[lat], lons[lon]));
+	let b = project(new google.maps.LatLng(lats[lat + 1], lons[lon + 1]));
+
+	return Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2));
+}
+
+// The mapping between latitude, longitude and pixels is defined by the web mercator projection.
+const TILE_SIZE = 256;
+function project(location) {
+	let siny = Math.sin(location.lat() * Math.PI / 180);
+
+	// Truncating to 0.9999 effectively limits latitude to 89.189. This is
+	// about a third of a tile past the edge of the world tile.
+	siny = Math.min(Math.max(siny, -0.9999), 0.9999);
+
+	return new google.maps.Point(
+		TILE_SIZE * (0.5 + location.lng() / 360),
+		TILE_SIZE * (0.5 - Math.log((1 + siny) / (1 - siny)) / (4 * Math.PI))
+	);
 }
