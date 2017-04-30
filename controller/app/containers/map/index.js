@@ -47,6 +47,12 @@ export class MapScreen extends Component {
 		};
 	}
 
+	componentWillReceiveProps(nextProps) {
+		if (!nextProps.registered) {
+			this.props.navigation.goBack(null);
+		}
+	}
+
 	renderError() {
 		const { error } = this.state;
 		if (error) {
@@ -55,7 +61,6 @@ export class MapScreen extends Component {
 	}
 
 	render() {
-		const { navigate } = this.props.navigation;
 		return (
 			<View style={componentStyles.screen}>
 				<Text>Map Screen</Text>
@@ -68,11 +73,12 @@ export class MapScreen extends Component {
 MapScreen.propTypes = {
 	actions: PropTypes.object,
 	code: PropTypes.string,
+	navigation: PropTypes.object,
 	registered: PropTypes.bool,
 };
 
 MapScreen.defaultProps = {
-	registered: false,
+	registered: true,
 };
 
 const mapStateToProps = (state) => {

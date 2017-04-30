@@ -1,6 +1,8 @@
 import { setRegistered, setError } from '../actions/registrationActions';
 import store from '../store/configStore';
+import autobind from 'autobind-decorator';
 
+@autobind
 class RegWS {
 	constructor() {
 		this.ws = new WebSocket('ws://localhost:3001');
@@ -17,6 +19,9 @@ class RegWS {
 			switch (event.event) {
 				case 'hello':
 					store.dispatch(setRegistered({ registered: true }));
+					setTimeout(() => {
+						store.dispatch(setRegistered({ registered: false }));
+					}, 2000);
 					break;
 			}
 		};
@@ -26,10 +31,7 @@ class RegWS {
 			console.log(e.message);
 		};
 
-		this.ws.onclose = (e) => {
-			// connection closed
-			console.log("onclose", e.code, e.reason);
-		};
+		this.ws.onclose = this.logout;
 	}
 
 	register(app) {
@@ -41,6 +43,12 @@ class RegWS {
 				app,
 			},
 		}));
+	}
+
+	logout(e) {
+		// connection closed
+		console.log("onclose", e.code, e.reason);
+		store.dispatch(setRegistered({ registered: false }));
 	}
 
 }

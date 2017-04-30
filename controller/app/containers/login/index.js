@@ -56,8 +56,10 @@ export class LoginScreen extends Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		const { navigate } = this.props.navigation;
-		navigate('MapScreen');
+		const { navigate } = nextProps.navigation;
+		if (nextProps.registered) {
+			navigate('MapScreen');
+		}
 	}
 
 	onChangeText(index, value) {
