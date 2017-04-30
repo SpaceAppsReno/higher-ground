@@ -1,3 +1,18 @@
 .mainWrapper{
 	overflow: hidden;
 }
+
+.key {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+
+	font-size: 36px;
+	text-align: center;
+	padding: 36px;
+
+	background: black;
+	border: 4px solid white;
+	color: white;
+}
