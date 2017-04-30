@@ -30,7 +30,6 @@ export class ProgressBar extends Component {
 	}
 
 	calcLayout({nativeEvent: { layout: {x, y, width, height}}}) {
-		console.log("calcLayout", width)
 		this.setState({ width });
 	}
 	render() {

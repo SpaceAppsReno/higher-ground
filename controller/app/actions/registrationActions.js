@@ -12,7 +12,13 @@ export function register({ code }) {
 	return (dispatch, getState) => {
 		dispatch(updateCode(code));
 		WSService.register(code);
-		console.log("getState", getState(), code)
+	};
+}
+
+export function setError({ error }) {
+	return {
+		type: REGISTRATION.SET_ERROR,
+		payload: error,
 	};
 }
 

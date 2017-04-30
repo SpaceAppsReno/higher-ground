@@ -181,7 +181,6 @@ export class MapScreen extends Component {
 	}
 
 	renderMapTouchArea() {
-		console.log("MapView", MapView)
 		return (
 			<View style={{
 				backgroundColor: 'gray',
@@ -205,7 +204,6 @@ export class MapScreen extends Component {
 	}
 
 	renderProgressBar() {
-		console.log("renderProgressBar")
 		return (
 			<ProgressBar
 				progress={100}
