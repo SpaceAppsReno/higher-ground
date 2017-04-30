@@ -1,6 +1,6 @@
 import qs from 'querystring';
 
-const uri = 'http://10.150.145.62:8080';
+const uri = 'http://higher-ground.azurewebsites.net';
 
 export default class API {
 	static _cache = {};
@@ -63,7 +63,6 @@ export default class API {
 		if (result && this._cache) {
 			this._cache[method][url][query] = result;
 		}
-
 		return result;
 	}
 
