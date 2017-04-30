@@ -7,23 +7,67 @@ import React, { Component } from 'react';
 export default class Map extends Component {
 	static propTypes = {
 		className: React.PropTypes.string,
-		zoom: React.PropTypes.number.isRequired,
-		center: React.PropTypes.shape({
-			lat: React.PropTypes.number.isRequired,
-			lng: React.PropTypes.number.isRequired,
-		}).isRequired,
+		dataset: React.PropTypes.oneOf([
+			'temperature',
+			'vegetation',
+			'precipitation',
+		]).isRequired,
+		year: React.PropTypes.number.isRequired,
+		bounds: React.PropTypes.shape({
+			east: React.PropTypes.number.isRequired,
+			north: React.PropTypes.number.isRequired,
+			south: React.PropTypes.number.isRequired,
+			west: React.PropTypes.number.isRequired,
+		}),
+
+		onBounds: React.PropTypes.func.isRequired,
 	};
 
 	registerMap(ref) {
-		if (!ref || this._map) {
+		if (!ref) {
 			return;
 		}
 
-		this._map = new google.maps.Map(ref, {
-			zoom: this.props.zoom,
-			center: this.props.center,
+		if (!this._map) {
+			this.initialize(ref);
+		}
 
-			scrollwheel: false,
+		let bounds = this._map.getBounds();
+		if (!bounds || !bounds.equals(this.props.bounds)) {
+			this._map.fitBounds(this.props.bounds);
+		}
+		else {
+			this.update();
+		}
+	}
+
+	registerSearch(ref) {
+		if (!ref) {
+			return;
+		}
+
+		if (!this._search) {
+			this._search = new google.maps.places.SearchBox(ref);
+
+			this._search.addListener('places_changed', () => {
+				let places = this._search.getPlaces();
+				if (places.length === 0) {
+					return;
+				}
+
+				places.forEach((place) => {
+					if (!place.geometry) {
+						return;
+					}
+
+					this._map.setCenter(place.geometry.location);
+				});
+			});
+		}
+	}
+
+	initialize(ref) {
+		this._map = new google.maps.Map(ref, {
 			disableDefaultUI: true,
 			styles: [
 				{
@@ -44,20 +88,53 @@ export default class Map extends Component {
 			],
 		});
 
-		this._marker = new google.maps.Marker({
-			position: this.props.center,
-			map: this._map,
+		window.addEventListener('resize', () => {
+			this._map.setCenter(this._map.fitBounds(this.props.bounds));
 		});
 
-		window.addEventListener('resize', () => {
-			this._map.setCenter(this._marker.getPosition());
+		this._map.addListener('idle', () => {
+			this.props.onBounds(this._map.getBounds().toJSON());
 		});
+	}
+
+	update() {
+		if (this.props.dataset !== 'temperature') {
+			return;
+		}
+
+		console.log('update')
+	}
+
+	geolocate() {
+		if (navigator.geolocation) {
+			navigator.geolocation.getCurrentPosition((position) => {
+				this._map.setCenter({
+					lat: position.coords.latitude,
+					lng: position.coords.longitude,
+				});
+			});
+		}
 	}
 
 	render() {
 		return (
 			<div className={ classes(styles.main, this.props.className) }>
-				<div className={ styles.map } ref={ (ref) => this.registerMap(ref) } />
+				<div
+					className={ styles.map }
+					ref={ (ref) => this.registerMap(ref) }
+				/>
+				<input
+					className={ styles.search }
+					type="text"
+					placeholder="Search Box"
+					ref={ (ref) => this.registerSearch(ref) }
+				/>
+
+				{ this.props.dataset === 'temperature' ? null : (
+					<div className={ styles.comingSoon }>
+						coming soon
+					</div>
+				) }
 			</div>
 		);
 	}

@@ -1,22 +1,47 @@
 import React, { Component } from 'react';
 import Map from './components/map/map';
 import Player from './components/player/player';
-import Search from './components/search/search';
 import Icons from './components/icons/icons';
-import Menu from './components/menu/menu';
 
 export default class App extends Component {
+	constructor() {
+		super();
+
+		this.state = {
+			dataset: 'temperature',
+			year: 2050,
+			bounds: {
+				east: -119.75490311964109,
+				north: 39.538635617749755,
+				south: 39.51195501951582,
+				west: -119.87841348035886,
+			},
+		};
+	}
+
+	registerMap(ref) {
+		this._map = ref;
+	}
+
 	render() {
 		return (
 			<div>
-				<Map zoom={10} center={{ lat: 39.5252966, lng: -119.8166583 }} />
-				<Search />
-				<Icons />
-				<Menu />
-				<Player handleChange={ (year) => {
-					console.log(year);
-				}}/>
+				<Map
+					ref={ (ref) => this.registerMap(ref) }
+					dataset={ this.state.dataset }
+					year={ this.state.year }
+					bounds={ this.state.bounds }
 
+					onBounds={ (bounds) => this.setState({ bounds }) }
+				/>
+
+				<Icons
+					onDataset={ (dataset) => this.setState({ dataset }) }
+					onGeolocate={ () => this._map && this._map.geolocate() }
+				/>
+				<Player
+					onYear={ (year) => this.setState({ year }) }
+				/>
 			</div>
 		);
 	}
