@@ -14,6 +14,7 @@ import { bindActionCreators } from 'redux';
 import autobind from 'autobind-decorator';
 import {
 	register,
+	setError,
 	updateCode,
 } from '../../actions/registrationActions';
 import { REGISTRATION_CODE_LENGTH } from '../../constants';
@@ -63,7 +64,6 @@ export class LoginScreen extends Component {
 	}
 
 	onChangeText(index, value) {
-		console.log("onChangeText", arguments)
 		const code = [...this.state.code];
 		code[index] = value;
 		let error = '';
@@ -72,7 +72,8 @@ export class LoginScreen extends Component {
 		if (!reg.test(value) && value.length) {
 			error = 'Invalid character.';
 		}
-		this.setState({ code, error });
+		this.setState({ code });
+		this.props.actions.setError({ error });
 	}
 
 	onPressRegister() {
@@ -80,9 +81,9 @@ export class LoginScreen extends Component {
 			return prev + val.trim().length;
 		}, 0);
 		if (codeCount < REGISTRATION_CODE_LENGTH) {
-			this.setState({ error: 'Invalid code.' });
+			this.props.actions.setError({ error: 'Invalid code.' });
 		} else {
-			this.setState({ error: '' });
+			this.props.actions.setError({ error: '' });
 			this.props.actions.register({
 				code: this.state.code.join(''),
 			});
@@ -90,7 +91,7 @@ export class LoginScreen extends Component {
 	}
 
 	renderError() {
-		const { error } = this.state;
+		const { error } = this.props;
 		if (error) {
 			return <Text style={componentStyles.error}>{error}</Text>;
 		}
@@ -106,6 +107,7 @@ export class LoginScreen extends Component {
 					maxLength={1}
 					style={componentStyles.input}
 					onChangeText={this.onChangeText.bind(this, index)}
+					placeholder="0"
 					value={code[index]}
 				/>
 			);
@@ -137,6 +139,7 @@ export class LoginScreen extends Component {
 LoginScreen.propTypes = {
 	actions: PropTypes.object,
 	code: PropTypes.string,
+	error: PropTypes.string,
 	navigation: PropTypes.object,
 	registered: PropTypes.bool,
 };
@@ -148,6 +151,7 @@ LoginScreen.defaultProps = {
 const mapStateToProps = (state) => {
 	return {
 		code: state.registrationReducer.code,
+		error: state.registrationReducer.error,
 		registered: state.registrationReducer.registered,
 	};
 };
@@ -156,6 +160,7 @@ const mapDispatchToProps = (dispatch) => {
 	return {
 		actions: bindActionCreators({
 			register,
+			setError,
 			updateCode,
 		}, dispatch),
 	};

@@ -3,7 +3,8 @@ import {
 } from '../actions/actionTypes';
 
 const initialState = {
-	code: '0000',
+	code: '',
+	error: '',
 	registered: false,
 };
 
@@ -14,8 +15,12 @@ export default function registrationReducer(state = initialState, action = {}) {
 				...state,
 				code: action.payload,
 			};
+		case REGISTRATION.SET_ERROR:
+			return {
+				...state,
+				error: action.payload,
+			};
 		case REGISTRATION.SET_REGISTERED:
-			console.log("SET_REGISTERED", action.payload)
 			return {
 				...state,
 				registered: action.payload,

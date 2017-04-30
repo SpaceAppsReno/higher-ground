@@ -7,7 +7,8 @@ import { convertBoundsToRegion } from '../helpers/mapHelpers';
 @autobind
 class WSService {
 	constructor() {
-		this.ws = new WebSocket('wss://higher-ground-communication.herokuapp.com');
+		// this.ws = new WebSocket('wss://higher-ground-communication.herokuapp.com');
+		this.ws = new WebSocket('ws://localhost:3001');
 
 		this.ws.onopen = (arg) => {
 			// connection opened
@@ -21,7 +22,11 @@ class WSService {
 			const event = JSON.parse(e.data);
 			switch (event.event) {
 				case 'hello':
-					store.dispatch(setRegistered({ registered: true }));
+					if (event.data.key) {
+						store.dispatch(setRegistered({ registered: true }));
+					} else {
+						store.dispatch(setError({ error: event.data.message }));
+					}
 					// setTimeout(() => {
 					// 	store.dispatch(setRegistered({ registered: false }));
 					// }, 2000);
