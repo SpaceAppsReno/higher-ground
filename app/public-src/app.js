@@ -75,7 +75,7 @@ export default class App extends Component {
 
 				<Player
 					year={this.state.year}
-					min={1994}
+					min={2001}
 					max={2100}
 					presenting={ this.state.presenting }
 					onYear={ (year) => this.setState({ year }) }

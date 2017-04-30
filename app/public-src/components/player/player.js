@@ -45,10 +45,22 @@ export default class Player extends Component {
 						step={1} />
 				</div>
 				<div className={styles.controls}>
-					<Icon className={classes(styles.control, styles.btn)} name='backward'/>
+					<Icon className={classes(styles.control, styles.btn)} name='backward' onClick={() => {
+						this.props.onYear(parseInt(this.props.year - 1));
+					}}/>
 					<Icon className={classes(styles.control, styles.btn)} name={this.state.playing ? 'pause' : 'play'}
-					onClick={ () => this.setState({ playing: !this.state.playing }) }/>
-					<Icon className={classes(styles.control, styles.btn)} name='forward'/>
+					onClick={ () => {
+						this.setState({ playing: !this.state.playing });
+						let looper = setInterval(function() {
+							this.props.year++;
+							if (!this.state.playing && this.props.year === this.props.max)	{
+								clearInterval(looper);
+							}
+						}, 1000);
+					}}/>
+					<Icon className={classes(styles.control, styles.btn)} name='forward' onClick={() => {
+						this.props.onYear(parseInt(this.props.year + 1));
+					}}/>
 				</div>
 			</div>
 		);
