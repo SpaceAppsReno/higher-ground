@@ -10,18 +10,24 @@
 }
 
 .temperature {
+	color: white;
+	transition: background-color 0.5s ease;
 	&.active {
 		color: red;
 	}
 }
 
 .vegetation {
+	color: white;
+	transition: background-color 0.5s ease;
 	&.active {
 		color: green;
 	}
 }
 
 .precipitation {
+	color: white;
+	transition: background-color 0.5s ease;
 	&.active {
 		color: blue;
 	}
