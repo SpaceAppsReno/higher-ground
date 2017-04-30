@@ -2,6 +2,7 @@ import styles from './map.scss';
 import classes from 'app-utils/classes';
 
 import React, { Component } from 'react';
+import Icon from 'app-components/icon/icon';
 
 /* global google */
 export default class Map extends Component {
@@ -123,10 +124,11 @@ export default class Map extends Component {
 					className={ styles.map }
 					ref={ (ref) => this.registerMap(ref) }
 				/>
+				<Icon className={styles.control} name='play'/>
 				<input
 					className={ styles.search }
 					type="text"
-					placeholder="Search Box"
+					placeholder=""
 					ref={ (ref) => this.registerSearch(ref) }
 				/>
 
