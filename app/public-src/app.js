@@ -47,6 +47,14 @@ export default class App extends Component {
 	}
 
 	render() {
+		if (this._controller) {
+			this._controller.emit('config', {
+				dataset: this.state.dataset,
+				year: this.state.year,
+				bounds: this.state.bounds,
+			});
+		}
+
 		return (
 			<div className={styles.mainWrapper}>
 				<Map
