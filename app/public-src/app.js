@@ -60,17 +60,19 @@ export default class App extends Component {
 				/>
 
 				<Icons
+					dataset={ this.state.dataset }
+					presenting={ this.state.presenting }
 					onDataset={ (dataset) => this.setState({ dataset }) }
 					onGeolocate={ () => this._map && this._map.geolocate() }
 					onPresent={ () => this.initPresentation() }
-					presenting={ this.state.presenting }
 				/>
 
 				<Player
-					onYear={ (year) => this.setState({ year }) }
+					year={this.state.year}
 					min={1994}
 					max={2100}
 					presenting={ this.state.presenting }
+					onYear={ (year) => this.setState({ year }) }
 				/>
 
 				{ this.state.key ? (

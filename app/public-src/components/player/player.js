@@ -6,23 +6,22 @@ import Icon from 'app-components/icon/icon';
 
 export default class Player extends Component {
 	static propTypes = {
+		year: React.PropTypes.number.isRequired,
 		min: React.PropTypes.number.isRequired,
 		max: React.PropTypes.number.isRequired,
+		presenting: React.PropTypes.bool.isRequired,
+		onYear: React.PropTypes.func.isRequired,
 	};
 
 	constructor() {
 		super();
 		this.state = {
-			year: 1994,
+			hidden: false,
 		};
 	}
 
 	handleChange = ({ target: { value: year } }) => {
-		this.setState({ year });
-	}
-	
-	handleChangeComplete = (e) => {
-		console.log('Change event completed');
+		this.props.onYear(parseInt(year));
 	}
 
 	render() {
@@ -33,13 +32,13 @@ export default class Player extends Component {
 					onClick={ () => this.setState({ hidden: !this.state.hidden }) }
 				></Icon>
 				<div className={styles.year}>
-					{this.state.year}
+					{this.props.year}
 				</div>
 				<div>
 					<input
 						className={styles.slider}
 						type="range"
-						value={this.state.year}
+						value={this.props.year}
 						min={this.props.min}
 						max={this.props.max}
 						onInput={this.handleChange}

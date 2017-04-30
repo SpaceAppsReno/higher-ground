@@ -9,5 +9,20 @@
 	text-align: center;
 }
 
-.filter {
+.temperature {
+	&.active {
+		color: red;
+	}
+}
+
+.vegetation {
+	&.active {
+		color: green;
+	}
+}
+
+.precipitation {
+	&.active {
+		color: blue;
+	}
 }
