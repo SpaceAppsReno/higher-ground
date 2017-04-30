@@ -1,6 +1,6 @@
 import qs from 'querystring';
 
-const uri = 'https://higher-ground-data.herokuapp.com';
+const uri = 'http://10.150.145.62:8080';
 
 export default class API {
 	static _cache = {};
@@ -68,7 +68,7 @@ export default class API {
 	}
 
 	static async getPoints({ dataset, year, bounds }) {
-		return this.request('GET', '/data', {
+		return this.request('GET', '/heat', {
 			dataset,
 			year,
 			bounds_east: bounds.east,
@@ -79,7 +79,7 @@ export default class API {
 	}
 }
 
-if (true) {
+if (false) {
 	API.getPoints = function() {
 		return Promise.resolve({
 			lons: [
