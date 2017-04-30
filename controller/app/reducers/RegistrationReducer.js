@@ -1,6 +1,5 @@
 import {
 	REGISTRATION,
-	SET_REGISTERED,
 } from '../actions/actionTypes';
 
 const initialState = {

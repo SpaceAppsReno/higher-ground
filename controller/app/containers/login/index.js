@@ -102,6 +102,7 @@ export class LoginScreen extends Component {
 			return (
 				<TextInput
 					key={index}
+					keyboardType="numeric"
 					maxLength={1}
 					style={componentStyles.input}
 					onChangeText={this.onChangeText.bind(this, index)}

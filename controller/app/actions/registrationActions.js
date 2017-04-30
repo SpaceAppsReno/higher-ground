@@ -1,5 +1,5 @@
 import { REGISTRATION } from './actionTypes';
-import RegistrationService from '../services/registrationService';
+import WSService from '../services/WSService';
 
 export function updateCode(payload) {
 	return {
@@ -11,7 +11,7 @@ export function updateCode(payload) {
 export function register({ code }) {
 	return (dispatch, getState) => {
 		dispatch(updateCode(code));
-		RegistrationService.register(code);
+		WSService.register(code);
 		console.log("getState", getState(), code)
 	};
 }

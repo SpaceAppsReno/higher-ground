@@ -1,9 +1,10 @@
 import { setRegistered, setError } from '../actions/registrationActions';
+import MapController from '../actions/mapControllerActions';
 import store from '../store/configStore';
 import autobind from 'autobind-decorator';
 
 @autobind
-class RegWS {
+class WSService {
 	constructor() {
 		this.ws = new WebSocket('ws://localhost:3001');
 
@@ -19,9 +20,12 @@ class RegWS {
 			switch (event.event) {
 				case 'hello':
 					store.dispatch(setRegistered({ registered: true }));
-					setTimeout(() => {
-						store.dispatch(setRegistered({ registered: false }));
-					}, 2000);
+					// setTimeout(() => {
+					// 	store.dispatch(setRegistered({ registered: false }));
+					// }, 2000);
+					break;
+				case 'playing':
+					store.dispatch(MapController.setPlaying(event.data));
 					break;
 			}
 		};
@@ -51,6 +55,16 @@ class RegWS {
 		store.dispatch(setRegistered({ registered: false }));
 	}
 
+	send(event, data) {
+		this.ws.send(JSON.stringify({
+			event,
+			data: {
+				...data,
+				type: 'controller',
+			},
+		}));
+	}
+
 }
 
-export default new RegWS();
+export default new WSService();
