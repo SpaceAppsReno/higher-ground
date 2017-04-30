@@ -17,7 +17,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 export class PlayButton extends Component {
 
 	render() {
-		const name = this.props.playing ? 'ios-pause' : 'ios-play';
+		const name = this.props.playing ? 'ios-play-outline' : 'ios-play';
 
 		return (
 			<TouchableOpacity onPress={this.props.onPress}>

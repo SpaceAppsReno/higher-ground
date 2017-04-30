@@ -1,5 +1,5 @@
 import { setRegistered, setError } from '../actions/registrationActions';
-import MapController from '../actions/mapControllerActions';
+import { setDataset, setPlaying, setYear, setRegion } from '../actions/mapControllerActions';
 import store from '../store/configStore';
 import autobind from 'autobind-decorator';
 import { convertBoundsToRegion } from '../helpers/mapHelpers';
@@ -7,8 +7,8 @@ import { convertBoundsToRegion } from '../helpers/mapHelpers';
 @autobind
 class WSService {
 	constructor() {
-		// this.ws = new WebSocket('wss://higher-ground-communication.herokuapp.com');
-		this.ws = new WebSocket('ws://localhost:3001');
+		this.ws = new WebSocket('wss://higher-ground-communication.herokuapp.com');
+		// this.ws = new WebSocket('ws://localhost:3001');
 
 		this.ws.onopen = (arg) => {
 			// connection opened
@@ -32,18 +32,24 @@ class WSService {
 					// }, 2000);
 					break;
 				case 'playing':
-					store.dispatch(MapController.setPlaying(event.data));
+					store.dispatch(setPlaying(event.data));
 					break;
 				case 'year':
-					store.dispatch(MapController.setYear(event.data));
+					store.dispatch(setYear(event.data));
 					break;
 				case 'dataset':
-					store.dispatch(MapController.setDataset(event.data));
+					store.dispatch(setDataset(event.data));
 					break;
 				case 'bounds':
-					store.dispatch(MapController.setRegion({
+					store.dispatch(setRegion({
 						...event.data.bounds,
 					}));
+					break;
+				case 'config':
+					console.log("config", event.data)
+					store.dispatch(setDataset(event.data.dataset));
+					store.dispatch(setYear(event.data.year));
+					store.dispatch(setRegion(convertBoundsToRegion({ ...event.data.bounds })));
 					break;
 			}
 		};
@@ -77,10 +83,7 @@ class WSService {
 		console.log("send", event, data)
 		this.ws.send(JSON.stringify({
 			event,
-			data: {
-				...data,
-				type: 'controller',
-			},
+			data,
 		}));
 	}
 

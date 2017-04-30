@@ -30,7 +30,7 @@ export class RewindButton extends Component {
 		const name = enabled ? 'ios-rewind' : 'ios-rewind-outline';
 
 		return (
-			<TouchableOpacity onPress={() => this.onPress}>
+			<TouchableOpacity onPress={this.onPress}>
 				<Icon
 					name={name}
 					size={size}

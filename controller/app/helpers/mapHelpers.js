@@ -22,8 +22,8 @@ export function convertBoundsToRegion(bounds) {
 		west,
 	} = bounds;
 
-	const latitude = (north - south) / 2;
-	const longitude = (east - west) / 2;
+	const latitude = (north + south) / 2;
+	const longitude = (east + west) / 2;
 	const latitudeDelta = Math.abs(north - latitude);
 	const longitudeDelta = Math.abs(east - longitude);
 	return {

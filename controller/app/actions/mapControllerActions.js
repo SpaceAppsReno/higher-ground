@@ -66,3 +66,11 @@ export function sendStop({ stopEnabled }) {
 		WSService.send('stop', { stopEnabled });
 	};
 }
+
+export function sendYear({ year }) {
+	console.log("sendYear", year)
+	return (dispatch) => {
+		dispatch(setYear(year));
+		WSService.send('year', year);
+	};
+}

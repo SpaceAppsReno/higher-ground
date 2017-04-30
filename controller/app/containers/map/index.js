@@ -23,6 +23,7 @@ import {
 	sendPlaying,
 	sendRegion,
 	sendStop,
+	sendYear,
 } from '../../actions/mapControllerActions';
 import RewindButton from '../../components/RewindButton';
 import PlayButton from '../../components/PlayButton';
@@ -80,7 +81,7 @@ export class MapScreen extends Component {
 
 	changeRegion(data) {
 		console.log("changeRegion", data)
-		this.props.actions.sendRegion(data)
+		// this.props.actions.sendRegion(data);
 	}
 
 	onChangeSearch() {
@@ -106,7 +107,7 @@ export class MapScreen extends Component {
 			}}>
 				<RewindButton
 					enabled={rewindEnabled}
-					onPress={() => null}
+					onPress={() => this.props.actions.sendYear({ year: this.props.year - 1 })}
 					size={50}
 					style={{
 						marginHorizontal: 14,
@@ -130,7 +131,7 @@ export class MapScreen extends Component {
 				/>
 				<FFButton
 					enabled={ffEnabled}
-					onPress={() => null}
+					onPress={() => this.props.actions.sendYear({ year: this.props.year + 1 })}
 					size={50}
 					style={{
 						marginRight: 14,
@@ -273,6 +274,7 @@ MapScreen.propTypes = {
 	registered: PropTypes.bool,
 	rewindEnabled: PropTypes.bool,
 	stopEnabled: PropTypes.bool,
+	year: PropTypes.number,
 };
 
 MapScreen.defaultProps = {
@@ -290,6 +292,7 @@ const mapStateToProps = (state) => {
 		registered: state.registrationReducer.registered,
 		rewindEnabled: state.mapControllerReducer.year !== state.mapControllerReducer.yearStart,
 		stopEnabled: state.mapControllerReducer.year !== state.mapControllerReducer.yearStart,
+		year: state.mapControllerReducer.year,
 	};
 };
 
@@ -301,6 +304,7 @@ const mapDispatchToProps = (dispatch) => {
 			sendPlaying,
 			sendRegion,
 			sendStop,
+			sendYear,
 			updateCode,
 		}, dispatch),
 	};

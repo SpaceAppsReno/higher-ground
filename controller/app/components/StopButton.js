@@ -30,7 +30,7 @@ export class StopButton extends Component {
 		const name = enabled ? 'ios-square' : 'ios-square-outline';
 
 		return (
-			<TouchableOpacity onPress={() => this.onPress}>
+			<TouchableOpacity onPress={this.onPress}>
 				<Icon
 					name={name}
 					size={size}
