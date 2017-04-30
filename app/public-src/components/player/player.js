@@ -53,7 +53,7 @@ export default class Player extends Component {
 					<Icon className={classes(styles.control, styles.btn)} name={this.state.playing ? 'pause' : 'play'}
 					onClick={ () => {
 						this.setState({ playing: !this.state.playing });
-						let looper = setInterval(function() {
+						var looper = setInterval(function() {
 							this.props.year++;
 							if (!this.state.playing && this.props.year === this.props.max)	{
 								clearInterval(looper);
