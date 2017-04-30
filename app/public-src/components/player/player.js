@@ -6,20 +6,23 @@ import Icon from 'app-components/icon/icon';
 
 export default class Player extends Component {
 	static propTypes = {
-		value: React.PropTypes.number,
-		min: React.PropTypes.number,
-		max: React.PropTypes.number,
-		handleChange: React.PropTypes.func.isRequired,
-		step: React.PropTypes.number,
+		min: React.PropTypes.number.isRequired,
+		max: React.PropTypes.number.isRequired,
 	};
 
 	constructor() {
 		super();
-
 		this.state = {
-			hidden: false,
-			playing: false,
+			year: 1994,
 		};
+	}
+
+	handleChange = ({ target: { value: year } }) => {
+		this.setState({ year });
+	}
+	
+	handleChangeComplete = (e) => {
+		console.log('Change event completed');
 	}
 
 	render() {
@@ -30,17 +33,17 @@ export default class Player extends Component {
 					onClick={ () => this.setState({ hidden: !this.state.hidden }) }
 				></Icon>
 				<div className={styles.year}>
-					2100
+					{this.state.year}
 				</div>
 				<div>
 					<input
 						className={styles.slider}
 						type="range"
-						value={this.props.value}
+						value={this.state.year}
 						min={this.props.min}
 						max={this.props.max}
-						onInput={this.props.handleChange}
-						step={this.props.step} />
+						onInput={this.handleChange}
+						step={1} />
 				</div>
 				<div className={styles.controls}>
 					<Icon className={classes(styles.control, styles.btn)} name='backward'/>
