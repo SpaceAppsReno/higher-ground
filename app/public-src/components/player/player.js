@@ -6,34 +6,49 @@ import Icon from 'app-components/icon/icon';
 
 export default class Player extends Component {
 	static propTypes = {
-		value: React.PropTypes.number,
-		min: React.PropTypes.number,
-		max: React.PropTypes.number,
-		handleChange: React.PropTypes.func.isRequired,
-		step: React.PropTypes.number,
+		year: React.PropTypes.number.isRequired,
+		min: React.PropTypes.number.isRequired,
+		max: React.PropTypes.number.isRequired,
+		presenting: React.PropTypes.bool.isRequired,
+		onYear: React.PropTypes.func.isRequired,
 	};
 
-	static defaultProps = {
-		visible: true,
-	};
+	constructor() {
+		super();
+		this.state = {
+			hidden: false,
+		};
+	}
+
+	handleChange = ({ target: { value: year } }) => {
+		this.props.onYear(parseInt(year));
+	}
 
 	render() {
 		return (
-			<div className={styles.main}>
+			<div className={classes(styles.main, { [styles.moveDown]: this.state.hidden }) }>
+				<Icon
+					className={classes(styles.reducBtn, styles.btn, { [styles.flip]: this.state.hidden }) } name='sort-down'
+					onClick={ () => this.setState({ hidden: !this.state.hidden }) }
+				></Icon>
+				<div className={styles.year}>
+					{this.props.year}
+				</div>
 				<div>
 					<input
 						className={styles.slider}
 						type="range"
-						value={this.props.value}
+						value={this.props.year}
 						min={this.props.min}
 						max={this.props.max}
-						onInput={this.props.handleChange}
-						step={this.props.step} />
+						onInput={this.handleChange}
+						step={1} />
 				</div>
 				<div className={styles.controls}>
-					<Icon className={styles.control} name='backward'/>
-					<Icon className={styles.control} name='play'/>
-					<Icon className={styles.control} name='forward'/>
+					<Icon className={classes(styles.control, styles.btn)} name='backward'/>
+					<Icon className={classes(styles.control, styles.btn)} name={this.state.playing ? 'pause' : 'play'}
+					onClick={ () => this.setState({ playing: !this.state.playing }) }/>
+					<Icon className={classes(styles.control, styles.btn)} name='forward'/>
 				</div>
 			</div>
 		);

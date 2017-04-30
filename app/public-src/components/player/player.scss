@@ -4,6 +4,26 @@
 	bottom: 0;
 	width: 100%;
 	text-align: center;
+	transition: transform 1s ease;
+
+	&.moveDown{
+		transform: translateY(140px);
+	}
+}
+
+.btn{
+	cursor:pointer;
+}
+
+.reducBtn{
+	font-size: 4rem;
+	color: white;
+	float: left;
+	transition: transform 1s ease;
+
+	&.flip{
+		transform:rotateX(180deg);
+	}
 }
 
 .slider {
@@ -11,7 +31,18 @@
 }
 
 .control {
-	font-size: 5rem;
+	font-size: 3rem;
 	color: white;
-	padding: 2rem;
+	margin: 2rem;
+}
+
+.year {
+	color: white;
+	margin-bottom: 15px;
+	display: inline-block;
+	float: right;
+	font-size: 5rem;
+	font-family: monospace;
+	background-color:rgba(255,0,0,0.3);
+	width: 10rem;
 }

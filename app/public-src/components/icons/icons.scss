@@ -1,0 +1,28 @@
+.main {
+	color: white;
+	font-size: 4rem;
+	position: absolute;
+	left: 0;
+	z-index: 5;
+	margin-left: 1rem;
+	width: 5%;
+	text-align: center;
+}
+
+.temperature {
+	&.active {
+		color: red;
+	}
+}
+
+.vegetation {
+	&.active {
+		color: green;
+	}
+}
+
+.precipitation {
+	&.active {
+		color: blue;
+	}
+}
