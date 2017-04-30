@@ -13,13 +13,22 @@ export default class Player extends Component {
 		step: React.PropTypes.number,
 	};
 
-	static defaultProps = {
-		visible: true,
-	};
+	constructor() {
+		super();
+
+		this.state = {
+			hidden: false,
+			playing: false,
+		};
+	}
 
 	render() {
 		return (
-			<div className={styles.main}>
+			<div className={classes(styles.main, { [styles.moveDown]: this.state.hidden }) }>
+				<Icon
+					className={classes(styles.reducBtn, styles.btn, { [styles.flip]: this.state.hidden }) } name='sort-down'
+					onClick={ () => this.setState({ hidden: !this.state.hidden }) }
+				></Icon>
 				<div className={styles.year}>
 					2100
 				</div>
@@ -34,9 +43,10 @@ export default class Player extends Component {
 						step={this.props.step} />
 				</div>
 				<div className={styles.controls}>
-					<Icon className={styles.control} name='backward'/>
-					<Icon className={styles.control} name='play'/>
-					<Icon className={styles.control} name='forward'/>
+					<Icon className={classes(styles.control, styles.btn)} name='backward'/>
+					<Icon className={classes(styles.control, styles.btn)} name={this.state.playing ? 'pause' : 'play'}
+					onClick={ () => this.setState({ playing: !this.state.playing }) }/>
+					<Icon className={classes(styles.control, styles.btn)} name='forward'/>
 				</div>
 			</div>
 		);
