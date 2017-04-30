@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Map from './components/map/map';
 import Player from './components/player/player';
 import Search from './components/search/search';
+import Menu from './components/menu/menu';
 import Icon from 'app-components/icon/icon';
 
 export default class App extends Component {
@@ -11,9 +12,11 @@ export default class App extends Component {
 				<Search />
 				<Icon style={{ color: 'white', zIndex: 3, fontSize: '4rem', position: 'absolute' }} name='compass'/>
 				<Map zoom={10} center={{ lat: 39.5252966, lng: -119.8166583 }} />
+				<Menu />
 				<Player handleChange={ (year) => {
 					console.log(year);
 				}}/>
+
 			</div>
 		);
 	}
