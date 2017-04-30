@@ -19,6 +19,7 @@ export default class Player extends Component {
 		super();
 		this.state = {
 			hidden: false,
+			looper: false,
 		};
 	}
 
@@ -50,15 +51,28 @@ export default class Player extends Component {
 					<Icon className={classes(styles.control, styles.btn)} name='backward' onClick={() => {
 						this.props.onYear(parseInt(this.props.year - 1));
 					}}/>
-					<Icon className={classes(styles.control, styles.btn)} name={this.state.playing ? 'pause' : 'play'}
+					<Icon className={classes(styles.control, styles.btn)} name={'play'}
 					onClick={ () => {
+						// let that = this;
+						// if (this.state.playing) {
+						// 	clearInterval(looper);
+						// 	console.log(this.state.playing, looper);
+						// 	return;
+						// }
 						this.setState({ playing: !this.state.playing });
-						var looper = setInterval(function() {
-							this.props.year++;
-							if (!this.state.playing && this.props.year === this.props.max)	{
-								clearInterval(looper);
+						this.state.looper = setInterval(() => {
+							this.props.onYear(parseInt(this.props.year + 1));
+							if (this.props.year > 2099) {
+								clearInterval(this.state.looper);
+								this.state.looper = false;
 							}
 						}, 1000);
+					}}/>
+					<Icon className={classes(styles.control, styles.btn)} name='stop' onClick={() => {
+						if (this.state.looper) {
+							clearInterval(this.state.looper);
+							this.state.looper = false;
+						}
 					}}/>
 					<Icon className={classes(styles.control, styles.btn)} name='forward' onClick={() => {
 						this.props.onYear(parseInt(this.props.year + 1));
